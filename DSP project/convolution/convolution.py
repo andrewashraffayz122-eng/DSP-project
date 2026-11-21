@@ -1,7 +1,3 @@
-"""
-DSP Project - Student 2: Convolution & Difference Equations
-Run with:  streamlit run app.py
-"""
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
