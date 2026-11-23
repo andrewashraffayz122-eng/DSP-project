@@ -7,7 +7,7 @@ from scipy.io import wavfile
 
 st.title("Audio Analysis - Interference Tone")
 
-uploaded = st.file_uploader("ارفع ملف WAV", type=["wav"])
+uploaded = st.file_uploader("Upload WAV file", type=["wav"])
 
 if uploaded is not None:
 
@@ -19,8 +19,8 @@ if uploaded is not None:
     x = x.astype(float)
     x = x / np.max(np.abs(x))
 
-    f_noise = st.radio("تردد التشويش (Hz)", [50, 60])
-    amp = st.slider("قوة التشويش (Amplitude)", 0.05, 1.0, 0.3)
+    f_noise = st.radio("Noise frequency (Hz)", [50, 60])
+    amp = st.slider("Amplitude", 0.05, 1.0, 0.3)
 
     N = len(x)                    
     t = np.arange(N) / fs          
@@ -42,7 +42,7 @@ if uploaded is not None:
     idx = np.argmax(mag_noisy[mask])                 
     detected = f_noisy[mask][idx]                   
 
-    st.success(f"التردد المكتشف للتشويش ≈ {detected:.1f} Hz")
+    st.success(f"Detected noise frequency ≈ {detected:.1f} Hz")
     st.write(f"Sampling frequency = {fs} Hz  |  Nyquist = {fs / 2} Hz")
 
     n_show = min(N, fs)
@@ -77,10 +77,10 @@ if uploaded is not None:
     wavfile.write(buf, fs, out_int16)
 
     st.subheader("Listen")
-    st.write("الصوت الأصلي:")
+    st.write("Clean WAV file:")
     st.audio(uploaded)
-    st.write("الصوت المشوش:")
+    st.write("With noise:")
     st.audio(buf.getvalue(), format="audio/wav")
 
-    st.download_button("حمّل الملف المشوش (noisy.wav)", buf.getvalue(),
+    st.download_button("Download noisy.wav", buf.getvalue(),
                        file_name="noisy.wav", mime="audio/wav")
